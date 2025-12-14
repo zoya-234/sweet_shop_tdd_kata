@@ -25,17 +25,20 @@ afterAll(async () => {
 
 
 describe("Auth API - Registration", () => {
-  it("should register a new user and return the email", async () => {
-    const response = await request(app)
-      .post("/api/auth/register")
-      .send({
-        email: "persist@test.com",
-        password: "123456",
-      });
+  it("should register a new user and store a hashed password", async () => {
+  const response = await request(app)
+    .post("/api/auth/register")
+    .send({
+      email: "hash@test.com",
+      password: "plaintext123",
+    });
 
-    expect(response.statusCode).toBe(201);
-    expect(response.body.user.email).toBe("persist@test.com");
-  });
+  expect(response.statusCode).toBe(201);
+
+  const userInDb = await User.findOne({ email: "hash@test.com" });
+  expect(userInDb.password).not.toBe("plaintext123");
+});
+
 
   it("should fail when email or password is missing", async () => {
     const response = await request(app)
