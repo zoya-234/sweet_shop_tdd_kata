@@ -9,8 +9,7 @@ export default function Sweets() {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [search, setSearch] = useState("");
-const [isAdmin, setIsAdmin] = useState(false);
-
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // 🔄 fetch sweets
   const fetchSweets = async () => {
@@ -26,17 +25,19 @@ const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     fetchSweets();
+
     const token = localStorage.getItem("token");
-  if (token) {
+    if (!token) {
+      setIsAdmin(false);
+      return;
+    }
+
     try {
       const decoded = jwtDecode(token);
       setIsAdmin(decoded.role === "admin");
     } catch {
       setIsAdmin(false);
     }
-  } else {
-    setIsAdmin(false);
-  }
   }, []);
 
   // ➕ add sweet (admin only)
