@@ -12,12 +12,18 @@ const {
   restockSweet
 } = require("../controllers/sweet.controller");
 
-router.post("/", authMiddleware, addSweet);
+// Public / user routes
 router.get("/", getSweets);
 router.put("/:id", authMiddleware, updateSweet);
-router.delete("/:id", authMiddleware, deleteSweet);
-router.get("/search", searchSweets);
 router.post("/purchase/:id", authMiddleware, purchaseSweet);
-router.post("/restock/:id", authMiddleware, restockSweet);
+router.get("/search", searchSweets);
+
+
+// Admin-only routes
+router.post("/", auth, admin, addSweet);          // ✅ admin
+router.delete("/:id", auth, admin, deleteSweet);  // ✅ admin
+router.post("/restock/:id", auth, admin, restockSweet); // ✅ admin
+
+
 
 module.exports = router;

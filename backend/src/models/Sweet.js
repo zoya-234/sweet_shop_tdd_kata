@@ -5,6 +5,10 @@ const sweetSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  category: {
+    type: String,
+    required: true, // ✅ REQUIRED BY SPEC
+  },
   price: {
     type: Number,
     required: true,

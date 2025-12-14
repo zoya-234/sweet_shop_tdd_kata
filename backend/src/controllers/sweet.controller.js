@@ -68,18 +68,29 @@ exports.deleteSweet = async (req, res) => {
 };
 
 exports.searchSweets = async (req, res) => {
-  const { q } = req.query;
-
   try {
+    const { q } = req.query;
+
+    if (!q) {
+      return res.status(400).json({
+        message: "Search query is required",
+      });
+    }
+
     const sweets = await Sweet.find({
-      name: { $regex: q, $options: "i" },
+      $or: [
+        { name: { $regex: q, $options: "i" } },
+        { category: { $regex: q, $options: "i" } },
+      ],
     });
 
-    return res.status(200).json(sweets);
+    res.status(200).json(sweets);
   } catch (error) {
-    return res.status(500).json({ message: "Server error" });
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
+
 
 exports.purchaseSweet = async (req, res) => {
   const { id } = req.params;
