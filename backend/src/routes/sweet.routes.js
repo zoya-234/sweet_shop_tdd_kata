@@ -15,8 +15,8 @@ const {
 
 // Public / user routes
 router.get("/", getSweets);
-router.put("/:id", authMiddleware, updateSweet);
-router.post("/purchase/:id", authMiddleware, purchaseSweet);
+router.put("/:id", auth, updateSweet);
+router.post("/purchase/:id", auth, purchaseSweet);
 router.get("/search", searchSweets);
 
 
