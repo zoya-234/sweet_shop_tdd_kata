@@ -70,4 +70,26 @@ describe("Auth API - Registration", () => {
   expect(response.statusCode).toBe(400);
 });
 
+it("should login an existing user with correct credentials", async () => {
+  // Register user first
+  await request(app)
+    .post("/api/auth/register")
+    .send({
+      email: "login@test.com",
+      password: "mypassword",
+    });
+
+  // Login
+  const response = await request(app)
+    .post("/api/auth/login")
+    .send({
+      email: "login@test.com",
+      password: "mypassword",
+    });
+
+  expect(response.statusCode).toBe(200);
+  expect(response.body.message).toBe("Login successful");
+});
+
+
 });
