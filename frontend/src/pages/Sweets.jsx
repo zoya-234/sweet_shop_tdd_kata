@@ -98,12 +98,13 @@ export default function Sweets() {
       <ul>
         {sweets.map((s) => (
           <li key={s._id}>
-            {s.name} – ₹{s.price} – Qty: {s.quantity}
-            <br />
-            <button onClick={() => purchaseSweet(s._id)}>Purchase</button>
-            <button onClick={() => restockSweet(s._id)}>Restock</button>
-            <button onClick={() => deleteSweet(s._id)}>Delete</button>
-          </li>
+  <strong>{s.name}</strong> ({s.category}) – ₹{s.price} – Qty: {s.quantity}
+  <br />
+  <button onClick={() => purchaseSweet(s._id)}>Purchase</button>
+  <button onClick={() => restockSweet(s._id)}>Restock</button>
+  <button onClick={() => deleteSweet(s._id)}>Delete</button>
+</li>
+
         ))}
       </ul>
     </div>
