@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const bcrypt = require("bcrypt");
 
 exports.registerUser = async (req, res) => {
   const { email, password } = req.body;
@@ -10,7 +11,6 @@ exports.registerUser = async (req, res) => {
   }
 
   try {
-    // Explicit duplicate check
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({
@@ -18,7 +18,12 @@ exports.registerUser = async (req, res) => {
       });
     }
 
-    const user = await User.create({ email, password });
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await User.create({
+      email,
+      password: hashedPassword,
+    });
 
     return res.status(201).json({
       message: "User registered successfully",
