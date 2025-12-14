@@ -21,38 +21,41 @@ afterAll(async () => {
 });
 
 describe("Sweet Shop API", () => {
-  it("should allow authenticated user to add a sweet", async () => {
-    // Register
+
+  it("should NOT allow non-admin user to add a sweet", async () => {
+    // Register normal user
     await request(app).post("/api/auth/register").send({
-      email: "sweet@test.com",
+      email: "user@test.com",
       password: "password",
     });
 
     // Login
     const loginRes = await request(app).post("/api/auth/login").send({
-      email: "sweet@test.com",
+      email: "user@test.com",
       password: "password",
     });
 
     const token = loginRes.body.token;
 
-    // Add sweet
+    // Try to add sweet
     const response = await request(app)
       .post("/api/sweets")
       .set("Authorization", `Bearer ${token}`)
       .send({
         name: "Gulab Jamun",
+        category: "Milk",
         price: 10,
         quantity: 50,
       });
 
-    expect(response.statusCode).toBe(201);
-    expect(response.body.name).toBe("Gulab Jamun");
+    // Expect forbidden
+    expect(response.statusCode).toBe(403);
   });
 
   it("should list all sweets", async () => {
     await Sweet.create({
       name: "Rasgulla",
+      category: "Milk",
       price: 12,
       quantity: 30,
     });
@@ -61,5 +64,7 @@ describe("Sweet Shop API", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body.length).toBe(1);
+    expect(response.body[0].name).toBe("Rasgulla");
   });
+
 });
