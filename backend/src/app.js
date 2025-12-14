@@ -8,7 +8,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173", // local React frontend
-      "https://sweet-shop-frontend.onrender.com", // future deployed frontend
+      "https://sweet-shop-frontend-zq65.onrender.com", // future deployed frontend
     ],
   })
 );
