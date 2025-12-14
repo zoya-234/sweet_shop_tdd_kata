@@ -18,7 +18,7 @@ export default function Sweets() {
     try {
       const decoded = jwtDecode(token);
       isAdmin = decoded.role === "admin";
-    } catch (err) {
+    } catch {
       isAdmin = false;
     }
   }
@@ -100,54 +100,67 @@ export default function Sweets() {
 
       {/* 🔍 Search */}
       <input
+        className="input"
         placeholder="Search by name or category"
         onChange={(e) => setSearch(e.target.value)}
       />
-      <button onClick={searchSweets}>Search</button>
+      <button className="primary" onClick={searchSweets}>
+        Search
+      </button>
 
       <hr />
 
       {/* ➕ Add Sweet (admin only) */}
       {isAdmin && (
-        <>
+        <div>
           <input
+            className="input"
             placeholder="Name"
             onChange={(e) => setName(e.target.value)}
           />
 
           <input
+            className="input"
             placeholder="Category"
             onChange={(e) => setCategory(e.target.value)}
           />
 
           <input
+            className="input"
             placeholder="Price"
             type="number"
             onChange={(e) => setPrice(e.target.value)}
           />
 
           <input
+            className="input"
             placeholder="Quantity"
             type="number"
             onChange={(e) => setQuantity(e.target.value)}
           />
 
-          <button onClick={addSweet}>Add Sweet</button>
+          <button className="primary" onClick={addSweet}>
+            Add Sweet
+          </button>
 
           <hr />
-        </>
+        </div>
       )}
 
       {/* 🍬 Sweet List */}
-      <ul>
+      <ul className="sweets-grid">
         {sweets.map((s) => (
-          <li key={s._id}>
-            <strong>{s.name}</strong> ({s.category}) – ₹{s.price} – Qty:{" "}
-            {s.quantity}
-            <br />
+          <li key={s._id} className="card">
+            <h3>
+              {s.name} <small>({s.category})</small>
+            </h3>
+
+            <p>₹{s.price}</p>
+            <p>Stock: {s.quantity}</p>
 
             {/* 🛒 Purchase */}
             <button
+              className="primary"
               disabled={s.quantity === 0}
               onClick={() => purchaseSweet(s._id)}
             >
@@ -156,10 +169,21 @@ export default function Sweets() {
 
             {/* 👑 Admin actions */}
             {isAdmin && (
-              <>
-                <button onClick={() => restockSweet(s._id)}>Restock</button>
-                <button onClick={() => deleteSweet(s._id)}>Delete</button>
-              </>
+              <div className="admin-actions">
+                <button
+                  className="success"
+                  onClick={() => restockSweet(s._id)}
+                >
+                  Restock
+                </button>
+
+                <button
+                  className="danger"
+                  onClick={() => deleteSweet(s._id)}
+                >
+                  Delete
+                </button>
+              </div>
             )}
           </li>
         ))}

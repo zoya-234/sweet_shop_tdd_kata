@@ -2,17 +2,13 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Sweets from "./pages/Sweets";
 
-function App() {
+export default function App() {
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="container">
       <h1>Sweet Shop Management</h1>
       <Register />
-      <hr />
       <Login />
-      <hr />
       <Sweets />
     </div>
   );
 }
-
-export default App;
