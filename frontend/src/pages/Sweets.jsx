@@ -7,6 +7,7 @@ export default function Sweets() {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
 
   const fetchSweets = async () => {
     const res = await API.get("/sweets");
@@ -25,10 +26,11 @@ export default function Sweets() {
   const addSweet = async () => {
     try {
       await API.post("/sweets", {
-        name,
-        price: Number(price),
-        quantity: Number(quantity),
-      });
+  name,
+  category, // ✅ SEND CATEGORY
+  price: Number(price),
+  quantity: Number(quantity),
+});
       fetchSweets();
     } catch {
       alert("Login required");
@@ -68,13 +70,30 @@ export default function Sweets() {
 
       <hr />
 
-      <input placeholder="Name" onChange={(e) => setName(e.target.value)} />
-      <input placeholder="Price" onChange={(e) => setPrice(e.target.value)} />
       <input
-        placeholder="Quantity"
-        onChange={(e) => setQuantity(e.target.value)}
-      />
-      <button onClick={addSweet}>Add Sweet</button>
+  placeholder="Name"
+  onChange={(e) => setName(e.target.value)}
+/>
+
+<input
+  placeholder="Category"
+  onChange={(e) => setCategory(e.target.value)}
+/>
+
+<input
+  placeholder="Price"
+  type="number"
+  onChange={(e) => setPrice(e.target.value)}
+/>
+
+<input
+  placeholder="Quantity"
+  type="number"
+  onChange={(e) => setQuantity(e.target.value)}
+/>
+
+<button onClick={addSweet}>Add Sweet</button>
+
 
       <ul>
         {sweets.map((s) => (
