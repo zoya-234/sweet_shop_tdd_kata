@@ -1,7 +1,7 @@
 require("dotenv").config();
 
-const app = require("backend/src/app.js");
-const connectDB = require("backend/src/config/db.js");
+const app = require("./app.js");
+const connectDB = require("./config/db.js");
 
 const PORT = 5000;
 
