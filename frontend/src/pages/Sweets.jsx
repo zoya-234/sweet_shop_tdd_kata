@@ -9,19 +9,8 @@ export default function Sweets() {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [search, setSearch] = useState("");
+const [isAdmin, setIsAdmin] = useState(false);
 
-  // 🔐 determine admin from token
-  const token = localStorage.getItem("token");
-  let isAdmin = false;
-
-  if (token) {
-    try {
-      const decoded = jwtDecode(token);
-      isAdmin = decoded.role === "admin";
-    } catch {
-      isAdmin = false;
-    }
-  }
 
   // 🔄 fetch sweets
   const fetchSweets = async () => {
@@ -37,6 +26,17 @@ export default function Sweets() {
 
   useEffect(() => {
     fetchSweets();
+    const token = localStorage.getItem("token");
+  if (token) {
+    try {
+      const decoded = jwtDecode(token);
+      setIsAdmin(decoded.role === "admin");
+    } catch {
+      setIsAdmin(false);
+    }
+  } else {
+    setIsAdmin(false);
+  }
   }, []);
 
   // ➕ add sweet (admin only)

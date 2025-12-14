@@ -13,6 +13,9 @@ export default function Login() {
     } catch (err) {
       alert("Login failed");
     }
+
+    window.location.reload();
+
   };
 
   return (
