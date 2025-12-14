@@ -89,5 +89,34 @@ it("should login and return a JWT token", async () => {
   expect(response.body.token).toBeDefined();
 });
 
+it("should allow access to protected route with valid token", async () => {
+  // Register
+  await request(app)
+    .post("/api/auth/register")
+    .send({
+      email: "protected@test.com",
+      password: "mypassword",
+    });
+
+  // Login
+  const loginRes = await request(app)
+    .post("/api/auth/login")
+    .send({
+      email: "protected@test.com",
+      password: "mypassword",
+    });
+
+  const token = loginRes.body.token;
+
+  // Access protected route
+  const response = await request(app)
+    .get("/api/auth/profile")
+    .set("Authorization", `Bearer ${token}`);
+
+  expect(response.statusCode).toBe(200);
+  expect(response.body.message).toBe("Protected data");
+});
+
+
 
 });
