@@ -70,25 +70,23 @@ describe("Auth API - Registration", () => {
   expect(response.statusCode).toBe(400);
 });
 
-it("should login an existing user with correct credentials", async () => {
-  // Register user first
+it("should login and return a JWT token", async () => {
   await request(app)
     .post("/api/auth/register")
     .send({
-      email: "login@test.com",
+      email: "jwt@test.com",
       password: "mypassword",
     });
 
-  // Login
   const response = await request(app)
     .post("/api/auth/login")
     .send({
-      email: "login@test.com",
+      email: "jwt@test.com",
       password: "mypassword",
     });
 
   expect(response.statusCode).toBe(200);
-  expect(response.body.message).toBe("Login successful");
+  expect(response.body.token).toBeDefined();
 });
 
 
